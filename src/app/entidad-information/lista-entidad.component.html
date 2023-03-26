@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="row p-4">
+    <div class="card p-3">
+      <div class="card-header text-center">
+          <h3>Lista de Entidades</h3>
+      </div>
+      <div class="card-body">
+      <table class="table table-sm table-ligth table-striped border rounded">
+        <thead>
+          <tr class="text-center align-middle">
+            <th scope="col">Tipo Documento</th>
+            <th scope="col">Número de Documento</th>
+            <th scope="col">Razon Social</th>
+            <th scope="col">Nombre Comercial</th>
+            <th scope="col">Tipo Contribuyente</th>
+            <th scope="col">Dirección</th>
+            <th scope="col">Telefono</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="align-middle" *ngFor="let entidad of listaEntidad">
+            <td>{{entidad.idTipoDocumento}}</td>
+            <td>{{entidad.nroDocumento}}</td>
+            <td>{{entidad.razonSocial}}</td>
+            <td>{{(entidad.nombreComercial==="")?'---':entidad.nombreComercial}}</td>
+            <td>{{entidad.idTipoContribuyente}}</td>
+            <td>{{entidad.direccion}}</td>
+            <td>{{(entidad.telefono==="")?'Sin telefono':entidad.telefono}}</td>
+            <td>{{entidad.estado}}</td>
+            <td>
+              <div class="row p-3 g-3">
+                <button class="btn btn-success" [routerLink]="['/entidadForm',entidad.idEntidad]" ng->Editar</button>
+                <button class="btn btn-danger" (click)="deleteEntity(entidad)">Eliminar</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </div>
+</div>
