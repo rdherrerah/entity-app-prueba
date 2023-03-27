@@ -7,5 +7,5 @@ export class Entidad {
     idTipoContribuyente: string | undefined;
     direccion: string | undefined;
     telefono: string | undefined;
-    estado: string |undefined;
+    estado: boolean |undefined;
 }

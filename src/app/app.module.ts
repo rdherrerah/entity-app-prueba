@@ -11,6 +11,10 @@ import { UsuarioService } from './login-form/usuario.service';
 import { EntidadService } from './entidad-information/entidad.service';
 import { RouterModule, Routes } from '@angular/router';
 import { EntidadFormComponent } from './entidad-information/entidad-form.component';
+import { TipoDocumentoComponent } from './tipo-documento-information/tipo-documento.component';
+import { TipoDocumentoService } from './tipo-documento-information/tipo-documento.service';
+import { TipoContribuyenteComponent } from './tipo-contribuyente-information/tipo-contribuyente.component';
+import { TipoContribuyenteService } from './tipo-contribuyente-information/tipo-contribuyente.service';
 
 const routes: Routes = [
   {path: '', redirectTo: '/loginForm', pathMatch: 'full'},
@@ -25,7 +29,9 @@ const routes: Routes = [
     HeaderComponent,
     ListaEntidadComponent,
     LoginFormComponent,
-    EntidadFormComponent
+    EntidadFormComponent,
+    TipoDocumentoComponent,
+    TipoContribuyenteComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +41,9 @@ const routes: Routes = [
   ],
   providers: [
     UsuarioService,
-    EntidadService
+    EntidadService,
+    TipoDocumentoService,
+    TipoContribuyenteService
   ],
   bootstrap: [AppComponent]
 })

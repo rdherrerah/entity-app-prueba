@@ -1,25 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Usuario } from './usuario';
-import { Router } from '@angular/router';
+import { map, Observable } from 'rxjs';
 
 @Injectable()
 export class UsuarioService {
   private urlEndpoint:string = "http://localhost:8080/jwt";
   private httpHeader:HttpHeaders = new HttpHeaders({'Content-Type':'application/json','Access-Control-Allow-Origin':'*'})
 
-  constructor(private http:HttpClient, private router:Router){
+  constructor(private http:HttpClient){
 
   }
 
-  public getJwt(usuario: Usuario){
-    // console.log(usuario.pswd+" "+usuario.user);
-    var res = this.http.post(this.urlEndpoint,usuario,{headers:this.httpHeader})
-    .subscribe(
-      response => {
-        localStorage.setItem("accessToken",Object.values(response)[0]);
-        this.router.navigate(['/listaEntidad']);
-    });
+  public getJwt(usuario: Usuario):Observable<Object>{
+    return this.http.post<Object>(this.urlEndpoint,usuario,{headers:this.httpHeader})
+    .pipe(
+      map(res => res as Object)
+    );
   }
 
 }

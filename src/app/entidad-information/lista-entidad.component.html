@@ -1,3 +1,5 @@
+<app-header></app-header>
+
 <div class="container">
   <div class="row p-4">
     <div class="card p-3">
@@ -5,34 +7,72 @@
           <h3>Lista de Entidades</h3>
       </div>
       <div class="card-body">
+        <div class="card-title">
+          <div class="d-flex mb-3 col-6" >
+            <label for="buscar">Buscar Información</label>
+            <input class="form-control me-2" type="buscar" [(ngModel)]="textoBuscar" placeholder="Buscar"
+                aria-label="Search">
+            <button class="btn btn-outline-success" type="submit" (click)="buscarEntidadPorDato()">Buscar</button>
+        </div>
+        </div>
       <table class="table table-sm table-ligth table-striped border rounded">
         <thead>
           <tr class="text-center align-middle">
-            <th scope="col">Tipo Documento</th>
-            <th scope="col">Número de Documento</th>
-            <th scope="col">Razon Social</th>
-            <th scope="col">Nombre Comercial</th>
-            <th scope="col">Tipo Contribuyente</th>
-            <th scope="col">Dirección</th>
-            <th scope="col">Telefono</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Opciones</th>
+            <th scope="col">Información Encontrada</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="align-middle" *ngFor="let entidad of listaEntidad">
-            <td>{{entidad.idTipoDocumento}}</td>
-            <td>{{entidad.nroDocumento}}</td>
-            <td>{{entidad.razonSocial}}</td>
-            <td>{{(entidad.nombreComercial==="")?'---':entidad.nombreComercial}}</td>
-            <td>{{entidad.idTipoContribuyente}}</td>
-            <td>{{entidad.direccion}}</td>
-            <td>{{(entidad.telefono==="")?'Sin telefono':entidad.telefono}}</td>
-            <td>{{entidad.estado}}</td>
-            <td>
-              <div class="row p-3 g-3">
-                <button class="btn btn-success" [routerLink]="['/entidadForm',entidad.idEntidad]" ng->Editar</button>
-                <button class="btn btn-danger" (click)="deleteEntity(entidad)">Eliminar</button>
+          <tr class="align-middle">
+            <td colspan="8">
+              <div class="accordion accordion-flush" id="accordions">
+                <div class="accordion-item"  *ngFor="let entidad of listaEntidad">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#flush-moreInformation'+entidad.idEntidad"  aria-expanded="false" [attr.aria-controls]="'#moreInformation'+entidad.idEntidad">
+                      <b>{{entidad.nroDocumento}}</b> => {{entidad.razonSocial}}
+                    </button>
+                  </h2>
+                  <div [id]="'flush-moreInformation'+entidad.idEntidad" class="accordion-collapse collapse" data-bs-parent="#accordions">
+                    <div class="accordion-body container">
+                      <div class="row">
+                        <div class="col-6">
+                          <b>Nro Documento:</b> {{entidad.nroDocumento}}
+                        </div>
+                        <div class="col-6">
+                          <b>Razon Social:</b> {{entidad.razonSocial}}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <b>Nombre Comercial:</b> {{(entidad.nombreComercial==="")?'---':entidad.nombreComercial}}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-6">
+                          <div *ngFor="let tipoDocumento of listaTipoDocumento" [hidden]="!(tipoDocumento.idTipoDocumento == entidad.idTipoDocumento)" ><b>Tipo Documento:</b> {{tipoDocumento.nombre}}</div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">                        
+                          <b>Dirección:</b> {{entidad.direccion}}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-6">
+                          <b>Telefono:</b> {{(entidad.telefono==="")?'Sin telefono':entidad.telefono}}<br>
+                        </div>
+                        <div class="col-6">
+                          <b>Estado:</b> {{entidad.estado?'Activo':'Inactivo'}}
+                        </div>
+                      </div>
+                      <div class="row p-3 g-3">
+                        <div class="col-2"></div>
+                        <button class="col-3 btn btn-success" [routerLink]="['/entidadForm',entidad.idEntidad]" ng->Editar</button>
+                        <div class="col-2"></div>
+                        <button class="col-3 btn btn-danger" (click)="deleteEntity(entidad)">Eliminar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </td>
           </tr>

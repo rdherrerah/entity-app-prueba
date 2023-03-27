@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Entidad } from './entidad';
 import { EntidadService } from './entidad.service';
 import Swal from 'sweetalert2'
+import { TipoDocumentoService } from '../tipo-documento-information/tipo-documento.service';
+import { TipoContribuyenteService } from '../tipo-contribuyente-information/tipo-contribuyente.service';
+import { TipoDocumento } from '../tipo-documento-information/tipo-documento';
+import { TipoContribuyente } from '../tipo-contribuyente-information/tipo-contribuyente';
 
 @Component({
   selector: 'app-entidad-form',
@@ -12,8 +16,14 @@ export class EntidadFormComponent implements OnInit {
   entidad: Entidad = new Entidad();
   textoBuscar: string = "";
   statusNewEntity: boolean =true;
+  listaTipoDocumento: TipoDocumento[] | undefined;
+  listaTipoContribuyente: TipoContribuyente[] | undefined;
 
-  constructor(private entidadService: EntidadService, private rutaActiva: ActivatedRoute) {
+  constructor(private entidadService: EntidadService,
+              private tipoDocumentoService: TipoDocumentoService,
+              private tipoContribuyenteService: TipoContribuyenteService,
+              private rutaActiva: ActivatedRoute,
+              private router:Router) {
 
   }
 
@@ -22,19 +32,45 @@ export class EntidadFormComponent implements OnInit {
     if (id !== '0') {
       this.entidadService.getEntidadById(id)
         .subscribe(
-          res => this.entidad = res
+          res => {this.entidad = res},
+          error => {
+            if (error['status'] == '403') {
+              this.alertaSinAutorizacion();
+            }
+          }
         );
       this.statusNewEntity = false;
     }else{
       this.entidad = new Entidad();
       this.statusNewEntity = true;
     }
+    this.tipoDocumentoService.getAllTipoDocumento().subscribe(
+      lista => {this.listaTipoDocumento = lista},
+      error => {
+        if (error['status'] == '403') {
+          this.alertaSinAutorizacion();
+        }
+      }
+    );
+    this.tipoContribuyenteService.getAllTipoContribuyente().subscribe(
+      lista => {this.listaTipoContribuyente = lista},
+      error => {
+        if (error['status'] == '403') {
+          this.alertaSinAutorizacion();
+        }
+      }
+    );
   }
 
-  buscarEntidad(){
-    this.entidadService.getEntidadById(this.textoBuscar)
+  buscarEntidadPorDocumento(){
+    this.entidadService.getEntidadByNroDocumento(this.textoBuscar)
     .subscribe(
-      res => this.entidad=res
+      res => {this.entidad=res},
+      error => {
+        if (error['status'] == '403') {
+          this.alertaSinAutorizacion();
+        }
+      }
     )
   }
 
@@ -44,11 +80,17 @@ export class EntidadFormComponent implements OnInit {
       res => {
         Swal.fire({
           icon: 'success',
-          title: 'Your work has been saved',
+          title: 'Entidad Guardada',
           showConfirmButton: false,
           timer: 1500
         });
         this.entidad = new Entidad();
+        this.router.navigate(['/listaEntidad']);
+      },
+      error => {
+        if (error['status'] == '403') {
+          this.alertaSinAutorizacion();
+        }
       }
     );
   }
@@ -68,6 +110,12 @@ export class EntidadFormComponent implements OnInit {
          res => {
           Swal.fire('Guardado!', '', 'success')
           this.entidad = new Entidad();
+          this.router.navigate(['/listaEntidad']);
+         },
+         error => {
+           if (error['status'] == '403') {
+             this.alertaSinAutorizacion();
+           }
          }
         );
       } else if (result.isDenied) {
@@ -85,5 +133,20 @@ export class EntidadFormComponent implements OnInit {
     this.statusNewEntity = false;
   }
 
+  alertaSinAutorizacion() {
+    Swal.fire({
+      title: 'Tiempo de conexión!',
+      text: "Para continuar navegando puedes volver a iniciar sesion",
+      icon: 'warning',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Iniciar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("accessToken");
+        
+        // this.router.navigate(['/loginForm']);
+      }
+    })
+  }
 
 }

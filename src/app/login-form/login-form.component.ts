@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from './usuario.service';
 import { Usuario } from './usuario';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -12,11 +13,16 @@ export class LoginFormComponent implements OnInit{
   ngOnInit(): void {
   }
 
-  constructor(private usuarioService:UsuarioService){
+  constructor(private usuarioService:UsuarioService, private router:Router){
 
   }
   public login(){
-    this.usuarioService.getJwt(this.usuario);
+    this.usuarioService.getJwt(this.usuario).subscribe(
+      response => {
+        localStorage.setItem("accessToken",Object.values(response)[0]);
+        this.router.navigate(['/listaEntidad']);
+      }
+    );
   }
 
 }

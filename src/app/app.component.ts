@@ -7,8 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit{
   title = 'entity-app-prueba';
-  isLoged:boolean | undefined;
   ngOnInit(): void {
-      this.isLoged = localStorage.getItem("accessToken")!==null;
   } 
 }
