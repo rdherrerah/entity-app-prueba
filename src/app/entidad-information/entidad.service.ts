@@ -20,6 +20,12 @@ export class EntidadService{
     );
   }
 
+  public getAllEntidadPage(page:string): Observable<Object>{
+    return this.http.get<Object[]>(this.urlEndpoint+'/page/'+page,{headers:this.httpHeader}).pipe(
+      map(res => res as Object)
+    );
+  }
+
   public getEntidadById(id:string): Observable<Entidad>{
     return this.http.get<Entidad>(this.urlEndpoint+'/find/'+id,{headers:this.httpHeader}).pipe(
       map(res => res as Entidad)

@@ -17,16 +17,27 @@ export class ListaEntidadComponent implements OnInit {
   listaTipoDocumento: TipoDocumento[] | undefined;
   listaTipoContribuyente: TipoContribuyente[] | undefined;
   textoBuscar: string | undefined;
+  paginas: number[] = [];
+  isTotalPage:boolean | undefined;
+  actualPage:number = 1;
 
   ngOnInit(): void {
-    this.entidadService.getAllEntidad().subscribe(
-      entidades => {
+    this.entidadService.getAllEntidadPage('1').subscribe(
+      paginas => {
         this.tipoDocumentoService.getAllTipoDocumento().subscribe(
           listaTD => {
             this.tipoContribuyenteService.getAllTipoContribuyente().subscribe(
               listaTC => {
+                this.isTotalPage = true;
+                this.actualPage = 1;
                 this.listaTipoContribuyente = listaTC;
-                this.listaEntidad = entidades;
+                for (const [key, value] of Object.entries(paginas)) {
+                  if(key=="content")
+                    this.listaEntidad = value;
+                  if(key=="totalPages"){
+                      this.paginas=Array(value).fill(1).map((x,i)=>i+1);
+                  }
+                }
                 this.listaTipoDocumento = listaTD;
               },
               error => {
@@ -57,12 +68,12 @@ export class ListaEntidadComponent implements OnInit {
     private router: Router) {
   }
 
-  deleteEntity(entidad: Entidad): void {
+  public deleteEntity(entidad: Entidad): void {
     var id: string = entidad.idEntidad !== undefined ? entidad.idEntidad : '';
     if (id !== undefined) {
       Swal.fire({
         title: 'Está seguro que quiere eliminar la entidad?',
-        text: `Se eliminará la entidad ${entidad.idEntidad}`,
+        text: `Se eliminará la entidad ${entidad.nroDocumento}`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -71,25 +82,40 @@ export class ListaEntidadComponent implements OnInit {
       }).then((result) => {
         if (result.value) {
           this.entidadService.deleteEntidad(id).subscribe();
-          this.entidadService.getAllEntidad().subscribe(
-            entidades => {
-              this.listaEntidad = entidades;
-            },
-            error => {
-              if (error['status'] == '403') {
-                this.alertaSinAutorizacion();
-              }
-            }
-          )
+          this.ngOnInit();
         }
       });
     }
   }
 
-  buscarEntidadPorDato() {
+  public buscarEntidadPage(page:number){
+    this.entidadService.getAllEntidadPage(page.toString()).subscribe(
+      paginas => {
+        this.isTotalPage = true;
+        this.actualPage = page;
+        for (const [key, value] of Object.entries(paginas)) {
+          if(key=="content")
+            this.listaEntidad = value;
+          if(key=="totalPages"){
+              this.paginas=Array(value).fill(1).map((x,i)=>i+1);
+          }
+        }
+      }
+    );
+  }
+
+  public buscarTodosEntidad(){
+    this.isTotalPage = true;
+    this.ngOnInit();
+  }
+
+  public buscarEntidadPorDato() {
     var information = this.textoBuscar === undefined ? "" : this.textoBuscar;
     this.entidadService.getEntidadByInformation(information).subscribe(
-      entidades => this.listaEntidad = entidades,
+      entidades => {
+        this.listaEntidad = entidades;
+        this.isTotalPage = false;
+      },
       error => {
         if (error['status'] == '403') {
           this.alertaSinAutorizacion();
@@ -98,7 +124,7 @@ export class ListaEntidadComponent implements OnInit {
     );
   }
 
-  alertaSinAutorizacion() {
+  private alertaSinAutorizacion() {
     Swal.fire({
       title: 'Tiempo de conexión!',
       text: "Para continuar navegando puedes volver a iniciar sesion",
