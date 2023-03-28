@@ -1,0 +1,119 @@
+<app-header></app-header>
+
+<div class="container">
+  <div class="row p-4">
+    <div class="card p-3">
+      <div class="card-header text-center">
+        <h3>Lista de Entidades</h3>
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          <div class="row">
+            <div class="d-flex mb-3 col-6">
+              <label for="buscar">Buscar Información</label>
+              <input class="form-control me-2" type="buscar" [(ngModel)]="textoBuscar" placeholder="Buscar"
+                aria-label="Search">
+              <button class="btn btn-outline-success" type="submit" (click)="buscarEntidadPorDato()">Buscar</button>
+            </div>
+            <div class="col-3"></div>
+            <div class="col-3">
+              <button class="btn btn-outline-dark" type="submit" (click)="buscarTodosEntidad()">Buscar todad entidades</button>
+            </div>
+          </div>
+        </div>
+        <table class="table table-sm table-ligth table-striped border rounded">
+          <thead>
+            <tr class="text-center align-middle">
+              <th scope="col">Información Encontrada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="align-middle">
+              <td colspan="8">
+                <div class="accordion accordion-flush" id="accordions">
+                  <div class="accordion-item" *ngFor="let entidad of listaEntidad">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        [attr.data-bs-target]="'#flush-moreInformation'+entidad.idEntidad" aria-expanded="false"
+                        [attr.aria-controls]="'#moreInformation'+entidad.idEntidad">
+                        <b>{{entidad.nroDocumento}}</b> => {{entidad.razonSocial}}
+                      </button>
+                    </h2>
+                    <div [id]="'flush-moreInformation'+entidad.idEntidad" class="accordion-collapse collapse"
+                      data-bs-parent="#accordions">
+                      <div class="accordion-body container">
+                        <div class="row">
+                          <div class="col-6">
+                            <b>Nro Documento:</b> {{entidad.nroDocumento}}
+                          </div>
+                          <div class="col-6">
+                            <b>Razon Social:</b> {{entidad.razonSocial}}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-12">
+                            <b>Nombre Comercial:</b> {{(entidad.nombreComercial==="")?'---':entidad.nombreComercial}}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6">
+                            <div *ngFor="let tipoDocumento of listaTipoDocumento"
+                              [hidden]="!(tipoDocumento.idTipoDocumento == entidad.idTipoDocumento)"><b>Tipo
+                                Documento:</b> {{tipoDocumento.nombre}}</div>
+                          </div>
+                          <div class="col-6">
+                            <div *ngFor="let tipoContribuyente of listaTipoContribuyente"
+                              [hidden]="!(tipoContribuyente.idTipoContribuyente == entidad.idTipoContribuyente)"><b>Tipo
+                                Contribuyente:</b> {{tipoContribuyente.nombre}}</div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-12">
+                            <b>Dirección:</b> {{entidad.direccion}}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6">
+                            <b>Telefono:</b> {{(entidad.telefono==="")?'Sin telefono':entidad.telefono}}<br>
+                          </div>
+                          <div class="col-6">
+                            <b>Estado:</b> {{entidad.estado?'Activo':'Inactivo'}}
+                          </div>
+                        </div>
+                        <div class="row p-3 g-3">
+                          <div class="col-2"></div>
+                          <button class="col-3 btn btn-success"
+                            [routerLink]="['/entidadForm',entidad.idEntidad]">Editar</button>
+                          <div class="col-2"></div>
+                          <button class="col-3 btn btn-danger" (click)="deleteEntity(entidad)">Eliminar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot *ngIf="isTotalPage">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" (click)="buscarEntidadPage((actualPage==1)?1:actualPage-1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item" *ngFor="let pagina of paginas"><a class="page-link"
+                    (click)="buscarEntidadPage(pagina)">{{pagina}}</a></li>
+                <li class="page-item">
+                  <a class="page-link" (click)="buscarEntidadPage((actualPage==paginas.length)?paginas.length:actualPage+1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

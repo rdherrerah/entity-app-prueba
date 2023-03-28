@@ -1,0 +1,92 @@
+<app-header></app-header>
+
+<div class="container">
+    <div class="row justify-content-center p-3">
+        <div class="card p-3 bg-opacity-10" [ngClass]="{'bg-info': statusNewEntity,'bg-secondary':!statusNewEntity}"
+            style="width: 28 rem;">
+            <div class="card-header text-center">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item p-1">
+                        <a class="nav-link" [ngClass]="{'active': statusNewEntity}" (click)="changeStatusNewEntity()"
+                            [routerLink]="['/entidadForm', '0']"><b>Nueva Entidad</b></a>
+                    </li>
+                    <li class="nav-item p-1">
+                        <a class="nav-link" [ngClass]="{'active': !statusNewEntity}" (click)="changeStatusOldEntity()"
+                            [routerLink]="['/entidadForm', '0']"><b>Editar Entidad</b></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    <h3>Información de entidad {{statusNewEntity?'nueva':'a editar'}}</h3>
+                </div>
+                <div class="d-flex mb-3 col-6" *ngIf="!statusNewEntity">
+                    <label for="buscar">Buscar por Nro Documento</label>
+                    <input class="form-control me-2" type="buscar" [(ngModel)]="textoBuscar" placeholder="Buscar"
+                        aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit" (click)="buscarEntidadPorDocumento()">Buscar</button>
+                </div>
+                <hr class="border border-dark border-2 opacity-50">
+                <div class="row">
+                    <div class="mb-3 col-4">
+                        <label for="tipoDocumento" class="form-label">Tipo Documento</label>
+                        <select class="form-select" [(ngModel)]="entidad.idTipoDocumento">
+                            <option *ngFor="let tipoDocumento of listaTipoDocumento"
+                                value="{{tipoDocumento.idTipoDocumento}}" >{{tipoDocumento.nombre}}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 col-4">
+                        <label for="nroDocumento" class="form-label">Nro Documento</label>
+                        <input type="text" class="form-control" id="nroDocumento" required
+                            [(ngModel)]="entidad.nroDocumento">
+                    </div>
+                    <div class="mb-3 col-4">
+                        <label for="tipoContribuyente" class="form-label">Tipo Contribuyente</label>
+                        <select class="form-select" [(ngModel)]="entidad.idTipoContribuyente">
+                            <option *ngFor="let tipoContribuyente of listaTipoContribuyente"
+                                value="{{tipoContribuyente.idTipoContribuyente}}" >{{tipoContribuyente.nombre}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-4">
+                        <label for="razonSocial" class="form-label">Razon Social</label>
+                        <input type="text" class="form-control" id="razonSocial" required
+                            [(ngModel)]="entidad.razonSocial">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3">
+                        <label for="nombreComercial" class="form-label">Nombre Comercial</label>
+                        <input type="text" class="form-control" id="nombreComercial" required
+                            [(ngModel)]="entidad.nombreComercial">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-6">
+                        <label for="direccion" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" id="direccion" required [(ngModel)]="entidad.direccion">
+                    </div>
+                    <div class="mb-3 col-6">
+                        <label for="telefono" class="form-label">Telefono</label>
+                        <input type="text" class="form-control" id="telefono" required [(ngModel)]="entidad.telefono">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6"></div>
+                    <div class="mb-3 col-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <input type="text" class="form-control" id="estado" disabled
+                            value="{{entidad.estado?'Activo':'Inactivo'}}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-3">
+                        <button type="button" (click)="statusNewEntity?agregarEntidad():updateEntidad()"
+                            class="btn btn-dark">{{statusNewEntity?'Guardar':'Actualizar'}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
