@@ -17,4 +17,12 @@ export class TipoDocumentoService {
       map(res => res as TipoDocumento[])
     );
   }
+
+  public updateTipoDocumento(idTipoDocumento:string,tipoDocumento:TipoDocumento):Observable<TipoDocumento>{
+    return this.http.post<TipoDocumento>(this.urlEndpoint+'/update/'+idTipoDocumento,tipoDocumento,{headers:this.httpHeader});
+  }
+
+  public saveTipoDocumento(tipoDocumento:TipoDocumento){
+    return this.http.put<TipoDocumento>(this.urlEndpoint+'/add',tipoDocumento,{headers:this.httpHeader});
+  }
 }

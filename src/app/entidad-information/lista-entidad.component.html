@@ -50,6 +50,9 @@
                         <div class="col-6">
                           <div *ngFor="let tipoDocumento of listaTipoDocumento" [hidden]="!(tipoDocumento.idTipoDocumento == entidad.idTipoDocumento)" ><b>Tipo Documento:</b> {{tipoDocumento.nombre}}</div>
                         </div>
+                        <div class="col-6">
+                          <div *ngFor="let tipoContribuyente of listaTipoContribuyente" [hidden]="!(tipoContribuyente.idTipoContribuyente == entidad.idTipoContribuyente)"><b>Tipo Contribuyente:</b> {{tipoContribuyente.nombre}}</div>
+                        </div>
                       </div>
                       <div class="row">
                         <div class="col-12">                        
@@ -66,7 +69,7 @@
                       </div>
                       <div class="row p-3 g-3">
                         <div class="col-2"></div>
-                        <button class="col-3 btn btn-success" [routerLink]="['/entidadForm',entidad.idEntidad]" ng->Editar</button>
+                        <button class="col-3 btn btn-success" [routerLink]="['/entidadForm',entidad.idEntidad]">Editar</button>
                         <div class="col-2"></div>
                         <button class="col-3 btn btn-danger" (click)="deleteEntity(entidad)">Eliminar</button>
                       </div>

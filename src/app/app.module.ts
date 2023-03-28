@@ -18,9 +18,11 @@ import { TipoContribuyenteService } from './tipo-contribuyente-information/tipo-
 
 const routes: Routes = [
   {path: '', redirectTo: '/loginForm', pathMatch: 'full'},
-  {path: 'loginForm',component:LoginFormComponent},
+  {path: 'loginForm',component: LoginFormComponent},
   {path: 'listaEntidad', component: ListaEntidadComponent},
-  {path: 'entidadForm/:id',component: EntidadFormComponent}
+  {path: 'entidadForm/:id',component: EntidadFormComponent},
+  {path: 'tipoContribuyente',component: TipoContribuyenteComponent},
+  {path: 'tipoDocumento',component: TipoDocumentoComponent}
 ];
 
 @NgModule({

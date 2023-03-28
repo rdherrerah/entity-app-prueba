@@ -1,1 +1,81 @@
-<p>tipo-contribuyente works!</p>
+<app-header></app-header>
+
+<div class="container">
+    <div class="row justify-content-center p-3">
+        <div class="card p-3 bg-opacity-10"
+            [ngClass]="{'bg-info': statusNewContribuyente,'bg-secondary':!statusNewContribuyente}"
+            style="width: 28 rem;">
+            <div class="card-header text-center">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item p-1">
+                        <a class="nav-link" [ngClass]="{'active': statusNewContribuyente}"
+                            (click)="changeNewContribuyente()"><b>Nuevo Tipo
+                                Contribuyente</b></a>
+                    </li>
+                    <li class="nav-item p-1">
+                        <a class="nav-link" [ngClass]="{'active': !statusNewContribuyente}"
+                            (click)="changeEditContribuyente()"><b>Editar Tipo
+                                Contribuyente</b></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    <h3>Información de Contributentes {{statusNewContribuyente?'nueva':'a editar'}}</h3>
+                </div>
+                <div class="row" *ngIf="statusNewContribuyente">
+                    <div class="row">
+                        <div class="mb-3 col-4">
+                            <label for="tipoContribuyenteNombre" class="form-label">Nombre Tipo Contribuyente</label>
+                            <input type="text" class="form-control" id="tipoContribuyenteNombre"
+                            [(ngModel)]="tipoContribuyente.nombre">
+                        </div>
+                        <div class="mb-3 col-4">
+                            <label for="estado" class="form-label">Estado</label>
+                            <input type="text" class="form-control" id="estado" disabled
+                                value="{{tipoContribuyente.estado?'Activo':'Inactivo'}}">
+                        </div>
+                        <div class="row p-3 g-3">
+                            <div class="col-2"></div>
+                            <button class="col-3 btn btn-success" (click)="agregarTipoContribuyente()">Crear Contribuyente</button>
+                            <div class="col-2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="!statusNewContribuyente">
+                    <div class="col-4">
+                        <div id="list" class="list-group">
+                            <a class="list-group-item list-group-item-action"
+                                *ngFor="let tipCon of listaTipoContribuyente"
+                                [ngClass]="{'active': tipCon.idTipoContribuyente === tipoContribuyente.idTipoContribuyente}"
+                                (click)="changeTipoContribuyente(tipCon)">
+                                {{tipCon.idTipoContribuyente}} => {{tipCon.nombre}}</a>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div *ngIf="tipoContribuyente.idTipoContribuyente!==undefined">
+                            <div class="row">
+                                <div class="mb-3 col-4">
+                                    <label for="tipoContribuyenteNombre" class="form-label">Nombre Tipo Contribuyente</label>
+                                    <input type="text" class="form-control" id="tipoContribuyenteNombre"
+                                    [(ngModel)]="tipoContribuyente.nombre">
+                                </div>
+                                <div class="mb-3 col-4">
+                                    <label for="estado" class="form-label">Estado</label>
+                                    <input type="text" class="form-control" id="estado" disabled
+                                        value="{{tipoContribuyente.estado?'Activo':'Inactivo'}}">
+                                </div>
+                            </div>
+                            <div class="row p-3 g-3">
+                                <div class="col-2"></div>
+                                <button class="col-3 btn btn-success" (click)="updateTipoContribuyente()">Guardar</button>
+                                <div class="col-2"></div>
+                                <!-- <button class="col-3 btn btn-danger">Eliminar</button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>            
+            </div>
+        </div>
+    </div>
+</div>

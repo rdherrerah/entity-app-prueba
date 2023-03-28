@@ -17,4 +17,12 @@ export class TipoContribuyenteService {
       map(res => res as TipoContribuyente[])
     );
   }
+
+  public updateTipoContribuyente(idTipoContribuyente:string,tipoContribuyente:TipoContribuyente):Observable<TipoContribuyente>{
+    return this.http.post<TipoContribuyente>(this.urlEndpoint+'/update/'+idTipoContribuyente,tipoContribuyente,{headers:this.httpHeader})
+  }
+
+  public saveTipoContribuyente(tipoContribuyente:TipoContribuyente){
+    return this.http.put<TipoContribuyente>(this.urlEndpoint+'/add',tipoContribuyente,{headers:this.httpHeader});
+  }
 }

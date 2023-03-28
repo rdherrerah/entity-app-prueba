@@ -1,1 +1,101 @@
-<p>tipo-documento works!</p>
+<app-header></app-header>
+
+<div class="container">
+    <div class="row justify-content-center p-3">
+        <div class="card p-3 bg-opacity-10"
+            [ngClass]="{'bg-info': statusNewDocumento,'bg-secondary':!statusNewDocumento}"
+            style="width: 28 rem;">
+            <div class="card-header text-center">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item p-1">
+                        <a class="nav-link" [ngClass]="{'active': statusNewDocumento}"
+                            (click)="changeNewDocumento()"><b>Nuevo Tipo
+                                Documento</b></a>
+                    </li>
+                    <li class="nav-item p-1">
+                        <a class="nav-link" [ngClass]="{'active': !statusNewDocumento}"
+                            (click)="changeEditDocumento()"><b>Editar Tipo
+                                Documento</b></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    <h3>Información de Documento {{statusNewDocumento?'nueva':'a editar'}}</h3>
+                </div>
+                <div class="row" *ngIf="statusNewDocumento">
+                    <div class="row">
+                        <div class="mb-3 col-4">
+                            <label for="tipoDocumentoNombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="tipoDocumentoNombre"
+                            [(ngModel)]="tipoDocumento.nombre">
+                        </div>
+                        <div class="mb-3 col-4">
+                            <label for="tipoDocumentoCodigo" class="form-label">Codigo</label>
+                            <input type="text" class="form-control" id="tipoDocumentoCodigo"
+                            [(ngModel)]="tipoDocumento.codigo">
+                        </div>
+                        <div class="mb-3 col-4">
+                            <label for="tipoDocumentoDescripcion" class="form-label">Descripcion</label>
+                            <input type="text" class="form-control" id="tipoDocumentoDescripcion"
+                            [(ngModel)]="tipoDocumento.descripcion">
+                        </div>
+                        <div class="mb-3 col-4">
+                            <label for="estado" class="form-label">Estado</label>
+                            <input type="text" class="form-control" id="estado" disabled
+                                value="{{tipoDocumento.estado?'Activo':'Inactivo'}}">
+                        </div>
+                        <div class="row p-3 g-3">
+                            <div class="col-2"></div>
+                            <button class="col-3 btn btn-success" (click)="agregarTipoDocumento()">Crear Documento</button>
+                            <div class="col-2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="!statusNewDocumento">
+                    <div class="col-4">
+                        <div id="list" class="list-group">
+                            <a class="list-group-item list-group-item-action"
+                                *ngFor="let tipDoc of listaTipoDocumento"
+                                [ngClass]="{'active': tipDoc.idTipoDocumento === tipoDocumento.idTipoDocumento}"
+                                (click)="changeTipoDocumento(tipDoc)">
+                                {{tipDoc.codigo}} => {{tipDoc.nombre}}</a>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div *ngIf="tipoDocumento.idTipoDocumento!==undefined">
+                            <div class="row" >
+                                <div class="mb-3 col-4">
+                                    <label for="tipoDocumentoNombre" class="form-label">Nombre Tipo Documento</label>
+                                    <input type="text" class="form-control" id="tipoDocumentoNombre"
+                                    [(ngModel)]="tipoDocumento.nombre">
+                                </div>
+                                <div class="mb-3 col-4">
+                                    <label for="tipoDocumentoCodigo" class="form-label">Codigo</label>
+                                    <input type="text" class="form-control" id="tipoDocumentoCodigo"
+                                    [(ngModel)]="tipoDocumento.codigo">
+                                </div>
+                                <div class="mb-3 col-12">
+                                    <label for="tipoDocumentoDescripcion" class="form-label">Descripcion</label>
+                                    <input type="text" class="form-control" id="tipoDocumentoDescripcion"
+                                    [(ngModel)]="tipoDocumento.descripcion">
+                                </div>
+                                <div class="mb-3 col-4">
+                                    <label for="estado" class="form-label">Estado</label>
+                                    <input type="text" class="form-control" id="estado" disabled
+                                        value="{{tipoDocumento.estado?'Activo':'Inactivo'}}">
+                                </div>
+                            </div>
+                            <div class="row p-3 g-3">
+                                <div class="col-2"></div>
+                                <button class="col-3 btn btn-success" (click)="updateTipoDocumento()">Guardar</button>
+                                <div class="col-2"></div>
+                                <!-- <button class="col-3 btn btn-danger">Eliminar</button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>            
+            </div>
+        </div>
+    </div>
+</div>

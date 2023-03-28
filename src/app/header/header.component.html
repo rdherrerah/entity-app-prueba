@@ -12,7 +12,16 @@
           <li class="nav-item">
             <a class="nav-link" [ngClass]="{'active': optionNav=='1'}" (click)="selectOptionNav('1')" [routerLink]="[ '/entidadForm','0']">Entidad Crear|Actualizar</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" [ngClass]="{'active': optionNav=='2'}" (click)="selectOptionNav('2')" [routerLink]="['/tipoContribuyente']">Contribuyente Crear|Actualizar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [ngClass]="{'active': optionNav=='3'}" (click)="selectOptionNav('3')" [routerLink]="['/tipoDocumento']">Documento Crear|Actualizar</a>
+          </li>
         </ul>
+        <div class="d-flex p-2">
+          <a type="button" class="btn btn-light" [ngClass]="{'active': optionNav=='9'}" href="#">Iniciar Sesión</a>
+        </div>
       </div>
     </div>
   </nav>
