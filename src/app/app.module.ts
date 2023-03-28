@@ -15,6 +15,7 @@ import { TipoDocumentoComponent } from './tipo-documento-information/tipo-docume
 import { TipoDocumentoService } from './tipo-documento-information/tipo-documento.service';
 import { TipoContribuyenteComponent } from './tipo-contribuyente-information/tipo-contribuyente.component';
 import { TipoContribuyenteService } from './tipo-contribuyente-information/tipo-contribuyente.service';
+import { FooterComponent } from './footer/footer.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/loginForm', pathMatch: 'full'},
@@ -33,7 +34,8 @@ const routes: Routes = [
     LoginFormComponent,
     EntidadFormComponent,
     TipoDocumentoComponent,
-    TipoContribuyenteComponent
+    TipoContribuyenteComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
